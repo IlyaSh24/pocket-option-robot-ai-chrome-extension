@@ -130,7 +130,7 @@ function callOrPut(tabId, amount) {
     };
     const getIsRealBalance = () => {
         const balanceLabel = document.querySelector('.balance-info-block__label');
-        return (balanceLabel && balanceLabel.innerHTML.trim() == 'QT Demo');
+        return (balanceLabel && balanceLabel.innerHTML.trim() == 'QT Real');
     };
     const getBalance = () => {
         const balanceEl = document.querySelector('.js-balance-demo');
