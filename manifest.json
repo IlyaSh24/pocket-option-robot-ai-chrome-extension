@@ -1,0 +1,18 @@
+{
+    "name": "Pocket option robot AI",
+    "description": "The new robot based on AI",
+    "version": "1.0",
+    "manifest_version": 3,
+    "icons": {
+        "16": "icons/robot16.png",
+        "32": "icons/robot32.png",
+        "48": "icons/robot48.png",
+        "128": "icons/robot128.png"
+    },
+    "action": {
+        "default_popup": "index.html"
+    },
+    "permissions": ["scripting"],
+    "host_permissions": ["<all_urls>"],
+    "background": {}
+}

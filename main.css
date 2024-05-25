@@ -1,0 +1,161 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 325px;
+    height: 275px;
+    background: linear-gradient(to right, #003b72, #00264a);
+    font-family: "Nunito Sans", sans-serif;
+}
+
+.amount-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.overlap-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px 0;
+    gap: 15px;
+}
+
+.amount-label {
+    display: block;
+    text-align: center;
+    font-size: 48px;
+    font-weight: 600;
+    padding-top: 12px;
+    /* color: #ffd700; */
+    color: rgba(250, 250, 250, 1.0);
+}
+
+.amount-field {
+    width: 230px;
+    font-size: 30px;
+    font-weight: 700;
+    margin: 10px auto;
+}
+
+ .overlap-label {
+    color: rgba(250, 250, 250, 0.45);
+}
+
+.overlap-group {
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.po-number {
+    display: block;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    color: #0b75ec;
+    background-color: rgba(210, 200, 200);
+}
+
+.live-circle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #15f38e;
+}
+
+.blink {
+    animation: blinker 1.5s cubic-bezier(.5, 0, 1, 1) infinite alternate; 
+}
+
+@keyframes blinker {  
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.start {
+    font-family: Montserrat, sans-serif;
+    display: block;
+    width: 225px;
+    padding: 10px;
+    background: linear-gradient(79deg,#0099fa,#002ed9);
+    transition: .5s;
+    border-radius: .75rem;
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+    border: none;
+    margin: 20px auto;
+    cursor: pointer;
+}
+
+.start:hover {
+    background: linear-gradient(79deg,#5599f1,#552ed1);
+    transition: .5s;
+}
+
+.live-trading-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.start-process-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+
+.lt-label {
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgba(210, 200, 210);
+}
+
+.lt-value {
+    font-size: 16px;
+}
+
+/* Spinner */
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    position: absolute;
+    bottom: 29px;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 
+
+.loader-off {
+    display: none;
+}
+
+.start-off {
+    display: none;
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pocket option robot AI</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <div class="wrapper modal">
+        <div class="amount-group">
+            <span class="amount-label">Amount $</span>
+            <input class="po-number amount-field" id="amount-field" type="number" min="0" step="5">
+        </div>
+        <div class="overlap-group">
+            <img src="icons/overlap.png" alt="Overlap" width="16" height="16">
+            <span class="overlap-label">Use overlap</span>
+            <input class="overlap-value" id="overlap-value" type="checkbox">
+        </div>
+        <div class="live-trading-group">
+            <div class="live-circle blink"></div>
+            <div class="lt-label">Is live trading</div>
+            <input class="lt-value" id="lt-value" type="checkbox">
+        </div>
+        <div class="start-process-group">
+            <button class="start" id="start">START</button>
+            <span class="loader loader-off" id="loader"></span>
+        </div>
+    </div>
+    <script src="robot.js"></script>
+</body>
+</html>
