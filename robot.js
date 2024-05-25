@@ -32,18 +32,27 @@ startBtn.addEventListener('click', () => {
     chrome.tabs.query({active: true}, function(tabs) {
         const tab = tabs[0];
         if (tab) {
-            chrome.scripting.executeScript(
-                {
-                    target: {tabId: tab.id, allFrames: true},
-                    func: callOrPut,
-                    args: [tab.id, amount]
-                }
-            );
+            if (tab.url.includes("https://pocketoption.com")) {
+                chrome.scripting.executeScript(
+                    {
+                        target: {tabId: tab.id, allFrames: true},
+                        func: callOrPut,
+                        args: [tab.id, amount]
+                    }
+                );
+            }
+            else {
+                alert('🤖 The robot is unavailable. Select Pocket Option tab!');
+                return;
+            }
         }
     });
 });
 
 amountEl.addEventListener('change', (event) => {
+    if (!event.target.value) {
+        amountEl.value = '0';
+    }
     localStorage.setItem('amount', event.target.value);
 });
 
