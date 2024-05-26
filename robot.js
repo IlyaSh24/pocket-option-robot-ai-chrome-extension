@@ -159,7 +159,7 @@ function callOrPut(tabId, amount) {
     }
 
     const MIN_THINK_PERIOD_SEC = 10;
-    const MAX_THINK_PERIOD_SEC = 60;
+    const MAX_THINK_PERIOD_SEC = 40;
 
     if (!getIsRealBalance()) {
         alert('❌ The robot works only with real balance account');
@@ -202,12 +202,12 @@ function callOrPut(tabId, amount) {
                     if (chrome.runtime.sendMessage({message: 'getIsOverlapEnabled'}, function(isEnabled) {
                         if (isEnabled && (actualBalance < oldBalance)) {
                             showHideSpinner();
-                            //makeActionsOfOverlap(); 
                             chrome.runtime.sendMessage({message: 'getSelectedAmount'}, (selectedAmount) => {
                                 updateAmountFromRobot(selectedAmount);
                                 analysisPeriod = getRandomIntBetween(MIN_THINK_PERIOD_SEC, MAX_THINK_PERIOD_SEC);
                                 setTimeout(function() {
                                     betButton.click();
+                                    makeActionsOfOverlap(); 
                                     showHideSpinner();
                                 }, analysisPeriod * 1000);
                             });
