@@ -29,6 +29,15 @@
     gap: 15px;
 }
 
+.all-in-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px 0;
+    gap: 15px;
+    visibility: none;
+}
+
 .amount-label {
     display: block;
     text-align: center;
@@ -47,6 +56,10 @@
 }
 
  .overlap-label {
+    color: rgba(250, 250, 250, 0.45);
+}
+
+.all-in-label {
     color: rgba(250, 250, 250, 0.45);
 }
 
@@ -158,4 +171,17 @@
 
 .start-off {
     display: none;
+}
+
+.additional-options {
+    text-decoration: none;
+    opacity: 0.1;
+}
+
+.additional-options:hover {
+    opacity: 0.5;
+}
+
+.additional-options:active {
+    color: white;
 }

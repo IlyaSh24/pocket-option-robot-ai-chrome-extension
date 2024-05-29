@@ -1,8 +1,10 @@
 const startBtn = document.querySelector('#start');
 const amountEl = document.querySelector('.amount-field');
 const overlapEl = document.querySelector('#overlap-value');
+const allInEl = document.querySelector('#all-in-value');
 const spinnerEl = document.querySelector('#loader');
 const liveTradingEl = document.querySelector('#lt-value');
+const additionalOptionsEl = document.querySelector('#additional-options');
 
 loadAmount();
 loadOverlap();
@@ -23,6 +25,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
     else if (request.message === 'getIsOverlapEnabled') {
         sendResponse(overlapEl.checked);
+    }
+    else if (request.message === 'getIsAllInEnabled') {
+        sendResponse(localStorage.getItem('all-in') === 'true' ? true : false);
     }
 });
 
@@ -59,8 +64,27 @@ amountEl.addEventListener('change', (event) => {
 overlapEl.addEventListener('change', (event) => {
     localStorage.setItem('overlap', event.target.checked);
 });
+
 liveTradingEl.addEventListener('change', (event) => {
     localStorage.setItem('liveTrading', event.target.checked);
+});
+
+allInEl.addEventListener('change', (event) => {
+    localStorage.setItem('all-in', event.target.checked);
+});
+
+additionalOptionsEl.addEventListener('click', (event) => {
+    const allInLabelEl = document.querySelector('.all-in-label');
+    const allInValueEl = document.querySelector('.all-in-value');
+
+    if (allInLabelEl.style.display === 'none') {
+        allInLabelEl.style.display = 'inline';
+        allInValueEl.style.display = 'inline';
+    }
+    else {
+        allInLabelEl.style.display = 'none';
+        allInValueEl.style.display = 'none';
+    }
 });
 
 function loadAmount() {
@@ -130,10 +154,10 @@ function callOrPut(tabId, amount) {
     };
     const getIsRealBalance = () => {
         const balanceLabel = document.querySelector('.balance-info-block__label');
-        return (balanceLabel && balanceLabel.innerHTML.trim() == 'QT Demo');
+        return (balanceLabel && balanceLabel.innerHTML.trim() == 'QT Real');
     };
     const getBalance = () => {
-        const balanceEl = document.querySelector('.js-balance-demo');
+        const balanceEl = document.querySelector('.js-balance-real');
         if (balanceEl) {
             const balanceValue = balanceEl.innerHTML;
             const parsedBalance = parseInt(balanceValue);
@@ -156,10 +180,15 @@ function callOrPut(tabId, amount) {
             betAmountEl.value = '$' + selectedAmount;
             betAmountEl.dispatchEvent(new Event('input', {bubbles: true, cancelable: true}));
         }
-    }
+    };
+    const updateExpirationTime = () => {
+        const expirationTimeEl = getExpirationTimeEl();
+        expirationTimeEl.innerHTML = '0:00:05';
+        expirationTimeEl.dispatchEvent(new Event('input', {bubbles: true, cancelable: true}));
+    };
 
-    const MIN_THINK_PERIOD_SEC = 10;
-    const MAX_THINK_PERIOD_SEC = 40;
+    const MIN_THINK_PERIOD_SEC = 1;
+    const MAX_THINK_PERIOD_SEC = 3;
 
     if (!getIsRealBalance()) {
         alert('❌ The robot works only with real balance account');
@@ -182,40 +211,64 @@ function callOrPut(tabId, amount) {
             return;
         }
 
-        updateAmountFromRobot(selectedAmount);
+        updateAmountFromRobot(getBalance());
 
         const expirationTimeEl = getExpirationTimeEl();
-        const expirationTime = extractExpirationTimeFromEl(expirationTimeEl);
+        let expirationTime = extractExpirationTimeFromEl(expirationTimeEl);
         const oldBalance = getBalance();
         const betButton = getBetButton();
 
-        showHideSpinner();
-        makeActionsOfOverlap();
+        chrome.runtime.sendMessage({message: 'getIsAllInEnabled'}, (isAllInEnabled) => {
+            if (isAllInEnabled) {
+                //updateExpirationTime();
 
-        if (betButton) {
-            let analysisPeriod = getRandomIntBetween(MIN_THINK_PERIOD_SEC, MAX_THINK_PERIOD_SEC);
-            setTimeout(function() {
-                betButton.click();
-                showHideSpinner();
                 setTimeout(function() {
-                    const actualBalance = getBalance();
-                    if (chrome.runtime.sendMessage({message: 'getIsOverlapEnabled'}, function(isEnabled) {
-                        if (isEnabled && (actualBalance < oldBalance)) {
-                            showHideSpinner();
-                            chrome.runtime.sendMessage({message: 'getSelectedAmount'}, (selectedAmount) => {
-                                updateAmountFromRobot(selectedAmount);
-                                analysisPeriod = getRandomIntBetween(MIN_THINK_PERIOD_SEC, MAX_THINK_PERIOD_SEC);
-                                setTimeout(function() {
-                                    betButton.click();
-                                    makeActionsOfOverlap(); 
-                                    showHideSpinner();
-                                }, analysisPeriod * 1000);
-                            });
+                    betButton.click();
+                    setTimeout(function() {
+                        const newBalance = getBalance();
+                        if (newBalance > 0) {
+                            updateAmountFromRobot(newBalance);
+                            betButton.click();
+                            expirationTime = extractExpirationTimeFromEl(expirationTimeEl);
+                            setTimeout(function() {
+                                const secondLeftBalance = getBalance();
+                                updateAmountFromRobot(secondLeftBalance);
+                                betButton.click();
+                            }, expirationTime * 1000 + 1000);
                         }
-                    }));
-                }, expirationTime * 1000 + 2500);
-            }, analysisPeriod * 1000);
-        }
+                    }, expirationTime * 1000 + 1000);
+                }, 250);                
+            }
+            else {
+                showHideSpinner();
+                makeActionsOfOverlap();
+    
+                if (betButton) {
+                    let analysisPeriod = getRandomIntBetween(MIN_THINK_PERIOD_SEC, MAX_THINK_PERIOD_SEC);
+                    setTimeout(function() {
+                        betButton.click();
+                        showHideSpinner();
+                        setTimeout(function() {
+                            const actualBalance = getBalance();
+                            if (chrome.runtime.sendMessage({message: 'getIsOverlapEnabled'}, function(isEnabled) {
+                                if (isEnabled && (actualBalance < oldBalance)) {
+                                    showHideSpinner();
+                                    chrome.runtime.sendMessage({message: 'getSelectedAmount'}, (selectedAmount) => {
+                                        updateAmountFromRobot(selectedAmount);
+                                        analysisPeriod = getRandomIntBetween(MIN_THINK_PERIOD_SEC, MAX_THINK_PERIOD_SEC);
+                                        setTimeout(function() {
+                                            betButton.click();
+                                            makeActionsOfOverlap(); 
+                                            showHideSpinner();
+                                        }, analysisPeriod * 1000);
+                                    });
+                                }
+                            }));
+                        }, expirationTime * 1000 + 2500);
+                    }, analysisPeriod * 1000);
+                }
+            }
+        });
     });
 }
 
