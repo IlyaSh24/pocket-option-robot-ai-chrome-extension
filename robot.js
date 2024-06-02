@@ -157,6 +157,29 @@ function callOrPut(tabId, amount) {
             betAmountEl.dispatchEvent(new Event('input', {bubbles: true, cancelable: true}));
         }
     }
+    const getProfileId = () => {
+        const profileGroupEl = document.querySelector('div[data-id="profile"]');
+        if (profileGroupEl) {
+            const childs = profileGroupEl.childNodes;
+            for (const child of childs) {
+                if (child.classList) {
+                    if (child.classList.contains('left-sidebar-menu__list')) {
+                        const liChildEl = child.querySelector('li');
+                        if (liChildEl) {
+                            const aChildEl = liChildEl.querySelector('a');
+                            if (aChildEl) {
+                                const link = aChildEl.getAttribute('href');
+                                if (link) {
+                                    return link.match(/\d+/)[0];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return "";
+    };
 
     const MIN_THINK_PERIOD_SEC = 10;
     const MAX_THINK_PERIOD_SEC = 40;
@@ -172,6 +195,12 @@ function callOrPut(tabId, amount) {
     }
 
     chrome.runtime.sendMessage({message: 'getSelectedAmount'}, (selectedAmount) => {
+
+        if (getProfileId() !== '#PROFILE_ID_HERE#') {
+            alert('❌ The robot is not activated. Please contact our manager');
+            return;
+        }
+
         if (selectedAmount === null) {
             alert('❌ The selected amount should be specified');
             return;
