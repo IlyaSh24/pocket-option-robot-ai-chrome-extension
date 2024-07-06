@@ -42,7 +42,7 @@ startBtn.addEventListener('click', () => {
                 );
             }
             else {
-                alert('🤖 The robot is unavailable. Select Pocket Option tab!');
+                alert('🤖 The robot is unavailable. Open Pocket Option website!');
                 return;
             }
         }
