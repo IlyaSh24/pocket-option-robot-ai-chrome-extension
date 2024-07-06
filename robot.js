@@ -35,7 +35,7 @@ startBtn.addEventListener('click', () => {
             if (tab.url.includes("https://pocketoption.com")) {
                 chrome.scripting.executeScript(
                     {
-                        target: {tabId: tab.id, allFrames: true},
+                        target: {tabId: tab.id, allFrames: false},
                         func: callOrPut,
                         args: [tab.id, amount]
                     }
