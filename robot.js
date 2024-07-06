@@ -32,7 +32,7 @@ startBtn.addEventListener('click', () => {
     chrome.tabs.query({active: true}, function(tabs) {
         const tab = tabs[0];
         if (tab) {
-            if (tab.url.includes("https://pocketoption.com")) {
+            if (tab.url.includes("https://pocketoption.com") || tab.url.includes("https://po.trade")) {
                 chrome.scripting.executeScript(
                     {
                         target: {tabId: tab.id, allFrames: false},
