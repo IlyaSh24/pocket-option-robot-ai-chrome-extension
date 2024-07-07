@@ -182,7 +182,7 @@ function callOrPut(tabId, amount) {
     };
 
     const MIN_THINK_PERIOD_SEC = 5;
-    const MAX_THINK_PERIOD_SEC = 15;
+    const MAX_THINK_PERIOD_SEC = 10;
 
     if (!getIsRealBalance()) {
         alert('❌ The robot works only with real balance account');
