@@ -12,7 +12,7 @@
     align-items: center;
     width: 325px;
     height: 275px;
-    background: linear-gradient(to right, #003b72, #00264a);
+    background: linear-gradient(to right, #9b2d30, #900020);
     font-family: "Nunito Sans", sans-serif;
 }
 
@@ -158,4 +158,11 @@
 
 .start-off {
     display: none;
+}
+
+.premium-star {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 14px;
 }
