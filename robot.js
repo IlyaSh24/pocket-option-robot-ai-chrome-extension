@@ -196,7 +196,7 @@ function callOrPut(tabId, amount) {
 
     chrome.runtime.sendMessage({message: 'getSelectedAmount'}, (selectedAmount) => {
 
-        if (getProfileId() !== '#PROFILE_ID_HERE#') {
+        if (getProfileId() !== '28549481') {
             alert('❌ The robot is not activated. Please contact our manager');
             return;
         }
